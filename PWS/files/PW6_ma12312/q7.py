@@ -4,9 +4,47 @@
 
 def replace_not_bad(text):
     # WRITE YOUR CODE HERE
-    pass
+    n = text.split()
 
+    nots = -1
+    bad = -1
 
+    for index, i in enumerate(n):
+        string = ''
+
+        for j in i:
+            string += j
+
+            if string.lower() == 'not':
+                nots = index
+            elif string.lower() == 'bad':
+                bad = index
+
+    if nots == -1 or bad == -1:
+        return text
+
+    word = n[bad]
+
+    if len(word) == 3:
+        new_word = "good"
+    else:
+        remaining = word[3:]
+        new_word = "good" + remaining
+
+    if word[0].isupper(): # checks is the word in the old list is capital 
+        new_word = new_word.capitalize()
+
+    n[nots:bad+1] = [new_word]
+
+    string = ''
+
+    for i in range(len(n)):
+        if i == 0:
+            string += n[i]
+        else:
+            string += ' ' + n[i]
+
+    return string
 # -----------------------------------------#
 # TESTING YOUR CODE                        #
 # -----------------------------------------#
