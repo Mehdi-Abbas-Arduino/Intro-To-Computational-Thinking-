@@ -48,3 +48,15 @@ if __name__ == "__main__":
 # -----------------------------------------#
 # To test your function, type the following command in the terminal:
 # pytest tests/test_q2.py
+
+x = 'campus'
+rotation = 2
+length = len(x)
+rotation = rotation % length
+new_rotation = (length - rotation)
+# first = x[:-rotation]
+# second = x[-rotation:]
+first = x[:new_rotation]
+second = x[new_rotation:]
+
+print(second+first)

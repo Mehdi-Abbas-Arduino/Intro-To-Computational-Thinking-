@@ -21,18 +21,18 @@ def expand_message(encoded_message):
         if encoded_message[i].isdigit():
             number = 0
 
-            while i < len(encoded_message) and encoded_message[i].isdigit():
+            while i < len(encoded_message) and encoded_message[i].isdigit(): # want to get digits 
                 number = number * 10 + int(encoded_message[i])
                 i += 1
 
-            if i < len(encoded_message) and encoded_message[i] == '[':
+            if i < len(encoded_message) and encoded_message[i] == '[': # searching first bracket 
                 first = i + 1
                 second = first
 
-                while second < len(encoded_message) and encoded_message[second] != ']':
+                while second < len(encoded_message) and encoded_message[second] != ']': # searching second bracket 
                     second += 1
 
-                letter = encoded_message[first:second]
+                letter = encoded_message[first:second] # 
                 string += number * letter
                 i = second + 1
 
