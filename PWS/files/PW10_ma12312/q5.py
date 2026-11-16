@@ -5,7 +5,8 @@ def helper(number_of_rows, index=1, string=''):
     if index > number_of_rows:
         return
     else:
-        string += str(index) + ' '
+        string = ' '.join([string, str(index)]).strip()
+        # string += str(index) + ' '
         print(string)
         helper(number_of_rows, index + 1, string)
 

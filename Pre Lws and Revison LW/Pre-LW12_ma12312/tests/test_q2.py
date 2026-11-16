@@ -1,0 +1,172 @@
+import hashlib
+import json
+import os
+import string
+import sys
+
+import pytest
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from q2 import create_lughat
+
+
+def hashcode(dictionary):
+    serialized = json.dumps(dictionary, sort_keys=True, separators=(',', ':'), ensure_ascii=True)
+    return hashlib.sha256(serialized.encode('utf-8')).hexdigest()
+
+
+q2_testcases = [
+    ('Python is fun, and a Python is easy 2024!',
+     {'a': ['a', 'and'],
+      'b': [],
+      'c': [],
+      'd': [],
+      'e': ['easy'],
+      'f': ['fun'],
+      'g': [],
+      'h': [],
+      'i': ['is'],
+      'j': [],
+      'k': [],
+      'l': [],
+      'm': [],
+      'n': [],
+      'o': [],
+      'p': ['python'],
+      'q': [],
+      'r': [],
+      's': [],
+      't': [],
+      'u': [],
+      'v': [],
+      'w': [],
+      'x': [],
+      'y': [],
+      'z': []}, True),
+    ('Python is a widely used high level programming language for general purpose programming, created by Guido van Rossum and first released in 1991. An interpreted language, Python has a design philosophy that emphasizes code readability (notably using whitespace indentation to delimit code blocks rather than curly brackets or keywords), and a syntax that allows programmers to express concepts in fewer lines of code than might be used in languages such as Fortran or Java. It provides constructs that enable clear programming on both small and large scales.',
+     {'a': ['a', 'allows', 'an', 'and', 'as'],
+      'b': ['be', 'blocks', 'both', 'brackets', 'by'],
+      'c': ['clear', 'code', 'concepts', 'constructs', 'created', 'curly'],
+      'd': ['delimit', 'design'],
+      'e': ['emphasizes', 'enable', 'express'],
+      'f': ['fewer', 'first', 'for', 'fortran'],
+      'g': ['general', 'guido'],
+      'h': ['has', 'high'],
+      'i': ['in', 'indentation', 'interpreted', 'is', 'it'],
+      'j': ['java'],
+      'k': ['keywords'],
+      'l': ['language', 'languages', 'large', 'level', 'lines'],
+      'm': ['might'],
+      'n': ['notably'],
+      'o': ['of', 'on', 'or'],
+      'p': ['philosophy', 'programmers', 'programming', 'provides', 'purpose', 'python'],
+      'q': [],
+      'r': ['rather', 'readability', 'released', 'rossum'],
+      's': ['scales', 'small', 'such', 'syntax'],
+      't': ['than', 'that', 'to'],
+      'u': ['used', 'using'],
+      'v': ['van'],
+      'w': ['whitespace', 'widely'],
+      'x': [],
+      'y': [],
+      'z': []}, True),
+    ('The goal of this book is to teach you to think like a computer scientist. This way of thinking combines some of the best features of mathematics, engineering, and natural science. Like mathematicians, computer scientists use formal languages to denote ideas (specifically computations). Like engineers, they design things, assembling components into systems and evaluating tradeoffs among alternatives. Like scientists, they observe the behavior of complex systems, form hypotheses, and test predictions.',
+     {'a': ['a', 'alternatives', 'among', 'and', 'assembling'],
+      'b': ['behavior', 'best', 'book'],
+      'c': ['combines', 'complex', 'components', 'computations', 'computer'],
+      'd': ['denote', 'design'],
+      'e': ['engineering', 'engineers', 'evaluating'],
+      'f': ['features', 'form', 'formal'],
+      'g': ['goal'],
+      'h': ['hypotheses'],
+      'i': ['ideas', 'into', 'is'],
+      'j': [],
+      'k': [],
+      'l': ['languages', 'like'],
+      'm': ['mathematicians', 'mathematics'],
+      'n': ['natural'],
+      'o': ['observe', 'of'],
+      'p': ['predictions'],
+      'q': [],
+      'r': [],
+      's': ['science', 'scientist', 'scientists', 'some', 'specifically', 'systems'],
+      't': ['teach',
+            'test',
+            'the',
+            'they',
+            'things',
+            'think',
+            'thinking',
+            'this',
+            'to',
+            'tradeoffs'],
+      'u': ['use'],
+      'v': [],
+      'w': ['way'],
+      'x': [],
+      'y': ['you'],
+      'z': []}, True),
+    ('The single most important skill for a computer scientist is problem solving. Problem solving means the ability to formulate problems, think creatively about solutions, and express a solution clearly and accurately. As it turns out, the process of learning to program is an excellent opportunity to practice problem solving skills. That is why this chapter is called, "The way of the program".',
+     {'a': ['a', 'ability', 'about', 'accurately', 'an', 'and', 'as'],
+      'b': [],
+      'c': ['called', 'chapter', 'clearly', 'computer', 'creatively'],
+      'd': [],
+      'e': ['excellent', 'express'],
+      'f': ['for', 'formulate'],
+      'g': [],
+      'h': [],
+      'i': ['important', 'is', 'it'],
+      'j': [],
+      'k': [],
+      'l': ['learning'],
+      'm': ['means', 'most'],
+      'n': [],
+      'o': ['of', 'opportunity', 'out'],
+      'p': ['practice', 'problem', 'problems', 'process', 'program'],
+      'q': [],
+      'r': [],
+      's': ['scientist', 'single', 'skill', 'skills', 'solution', 'solutions', 'solving'],
+      't': ['that', 'the', 'think', 'this', 'to', 'turns'],
+      'u': [],
+      'v': [],
+      'w': ['way', 'why'],
+      'x': [],
+      'y': [],
+      'z': []}, True),
+    ('',
+     '903d930ddd2197550513979b37b1ed7b45970d3e773b2a0326a4ac6d17c04864', False),
+    ('!!! 1234 --',
+     '903d930ddd2197550513979b37b1ed7b45970d3e773b2a0326a4ac6d17c04864', False),
+    ("Don't well-known",
+     '8d2e7250cd5fc5945e29421eb68f1f56da051982c7ab0269cba64a87584addca', False),
+    ('high-level C++ 2024',
+     '170f55580dd062b97d55669758dd32a019fc6b5ac162ada0a8503c8b18915952', False),
+    ('apple apricot banana berry',
+     'a10482fc2797ece1daa3bb570ae996a06367bca98a66862bbcf78529039bce50', False),
+    ('a, b.c',
+     '05271fa1abfbf18e21379b0f77e420d3c0601b05de8f7b60ba0b9f374b7b6b22', False),
+    ('one1two',
+     'b84ed18484982e606239f7cfb389ee3e1f6c3a3eb912ee83dcc221d1f73c626b', False),
+    ('abcDEFghi',
+     '7274606bfbcf604364ec1ec026a6c05a4e4402027d259b9c005c5e2e9245ee13', False),
+    ('Python\tjava\nC++',
+     '029e39abcf31a88917d090c7d562dcc7761fa36a719b8f78b8311e20c339a8d0', False),
+    ('a_b $in?',
+     'df4bb4f770f87eb058838c2c1e3538094d9d0e885f0a65cd33ae7a73dd94bd7f', False),
+    ('z Z a A p P',
+     'baa5e65a4625fb184310cfa2272e374a5d67cd541b200968995141c03e6425ad', False),
+]
+
+
+@pytest.mark.parametrize("text, expected, visible", q2_testcases)
+def test_q2(capsys, text, expected, visible):
+    result = create_lughat(text)
+    assert isinstance(result, dict), "The function must return a dictionary."
+    assert set(result) == set(string.ascii_lowercase), "All 26 letters must be included."
+    for words in result.values():
+        assert isinstance(words, list), "Each value must be a list."
+        assert words == sorted(set(words)), "Each list must contain unique, sorted words."
+    if visible:
+        assert result == expected
+    else:
+        assert hashcode(result) == expected
