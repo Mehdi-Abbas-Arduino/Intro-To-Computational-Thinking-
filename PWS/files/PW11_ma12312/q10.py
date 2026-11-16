@@ -11,6 +11,31 @@ def helperequal(first_word, second_word,diff=0):
         return helperequal(first_word[1:],second_word[1:],diff)
 
 def helper(first_word, second_word):
+    """
+The approach is based on comparing two strings, regardless of their lengths.
+
+If both strings have equal lengths, compare their characters
+position by position and count the mismatches.
+
+If their lengths are different, identify the longer and shorter
+strings. Since the shorter string can match any consecutive
+part of the longer string, use a sliding-window approach.
+
+The window size is equal to the length of the shorter string.
+Move this window across the longer string and compare each
+selected substring with the shorter string.
+
+For every new substring, initialize current_diff to 0.
+This variable counts the mismatches in the current comparison.
+
+Use min_diff to remember the smallest mismatch count found
+among all possible substrings. This ensures that we select
+the best possible match rather than accumulating mismatches
+from different comparisons.
+
+Finally, add the difference in the lengths of the two original
+strings to min_diff to calculate the total word distance.
+"""
     if len(first_word) > len(second_word):
         longer = first_word.lower()
         shorter = second_word.lower()
